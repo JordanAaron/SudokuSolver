@@ -3,22 +3,35 @@ using System.Collections.Generic;
 
 namespace SudokuSolver {
     class Program {
-        public static List<List<int>> board = new List<List<int>>();
-        public static List<int> columns = new List<int>();
-        public bool solved = false;
+        public static List<List<int>> listOfRows = new List<List<int>>();
+        public static List<List<int>> listOfColumns = new List<List<int>>();
 
         static void Main(string[] args) {
-            getValues();
-            createBoard(board);
-            getColumn(0,board);
+            getRows();
+            getColumns(listOfRows);
 
-            foreach (int num in columns) {
-                Console.Write(num);
-                Console.Write(' ');
+            foreach (List<int> row in getListOfRows()) {
+                Console.Write("Row: ");
+                foreach(int val in row) {
+                    Console.Write(val);
+                    Console.Write(' ');
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+
+            foreach (List<int> col in getListOfColumns()) {
+                Console.Write("Column: ");
+                foreach (int val in col) {
+                    Console.Write(val);
+                    Console.Write(' ');
+                }
+                Console.WriteLine();
             }
         }
 
-        private static void getValues() {
+        private static void getRows() {
             string enteredRow;
             char[] enteredRowArr;
             List<int> list;
@@ -41,15 +54,33 @@ namespace SudokuSolver {
                 foreach (char ch in enteredRowArr) {
                     list.Add(int.Parse(ch.ToString()));
                 }
-                board.Add(list);
+                listOfRows.Add(list);
             }
+        }
+
+        private static void getColumns(List<List<int>> board) {
+            for (int i = 0; i < listOfRows.Count; i++) {
+                listOfColumns.Add(createColumn(i, board));
+            }
+        }
+
+        static List<int> createColumn(int columnNum, List<List<int>> board) {
+            List<int> column = new List<int>();
+            foreach (List<int> row in board) {
+                for (int i = 0; i < row.Count; i++) {
+                    if (columnNum == i) {
+                        column.Add(row[columnNum]);
+                    }
+                }
+            }
+            return column;
         }
 
         static bool rowValid(string s) {
             return s.Length == 9 && int.TryParse(s, out _);
         }
 
-        private static void createBoard(List<List<int>> board) {
+        private static void printBoard(List<List<int>> board) {
             foreach (var row in board) {
                 foreach (var value in row) {
                     Console.Write(value);
@@ -59,23 +90,12 @@ namespace SudokuSolver {
             }
         }
 
-        static void getColumn(int columnNum, List<List<int>> board) {
-            foreach (List<int> row in board) {
-                for(int i = 0; i < row.Count; i++) {
-                    if(columnNum == i) {
-                        //Console.Write(row[columnNum]);
-                        //Console.Write(' ');
-                        columns.Add(row[columnNum]);
-                    }
-                    
-                }
-            }
+        static List<List<int>> getListOfRows() {
+            return listOfRows;
         }
 
-        private void solve() {
-            while (!solved) {
-             
-            }
+        static List<List<int>> getListOfColumns() {
+            return listOfColumns;
         }
     }
 }
