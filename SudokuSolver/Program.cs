@@ -9,34 +9,16 @@ namespace SudokuSolver {
 
         static void Main(string[] args) {
             getRows();
-            getColumns(listOfRows);
-            
+            createListOfColumns(listOfRows);
+            printBoard(listOfRows);
+            solve();
+            Console.WriteLine();
+            printBoard(listOfRows);
 
-            //foreach (List<int> row in getListOfRows()) {
-                //Console.Write("Row: ");
-                //foreach(int val in row) {
-                    //Console.Write(val);
-                    //Console.Write(' ');
-                //}
-                //Console.WriteLine();
-            //}
 
-            //Console.WriteLine();
-
-            //getBox(1);
-
-            //Console.WriteLine();
-
-            //getBox(4);
-
-            //foreach (List<int> col in getListOfColumns()) {
-            //Console.Write("Column: ");
-            //foreach (int val in col) {
-            //  Console.Write(val);
-            //Console.Write(' ');
-            //}
-            //Console.WriteLine();
-            //}
+            //if box contains 0 then 
+            //check for remaining numbers in the cell (if cell !contain i check if the number occurs in the row or the column)
+            //if row contains i or column contains i move onto the next number
         }
 
         static void getRows() {
@@ -66,7 +48,11 @@ namespace SudokuSolver {
             }
         }
 
-        static void getColumns(List<List<int>> board) {
+        static bool rowValid(string s) {
+            return s.Length == 9 && int.TryParse(s, out _);
+        }
+
+        static void createListOfColumns(List<List<int>> board) {
             for (int i = 0; i < listOfRows.Count; i++) {
                 listOfColumns.Add(createColumn(i, board));
             }
@@ -84,19 +70,7 @@ namespace SudokuSolver {
             return column;
         }
 
-        static bool rowValid(string s) {
-            return s.Length == 9 && int.TryParse(s, out _);
-        }
-
-        static List<List<int>> getListOfRows() {
-            return listOfRows;
-        }
-
-        static List<List<int>> getListOfColumns() {
-            return listOfColumns;
-        }
-
-        static void getCell(int cellNumber) {
+        static List<int> getCell(int cellNumber) {
             List<int> cell;
             switch (cellNumber) {
                 case 1:
@@ -108,7 +82,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 2:
                     cell = new List<int>();
                     for (int i = 0; i < 3; i++) {
@@ -118,7 +93,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 3:
                     cell = new List<int>();
                     for (int i = 0; i < 3; i++) {
@@ -128,7 +104,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 4:
                     cell = new List<int>();
                     for (int i = 3; i < 6; i++) {
@@ -138,7 +115,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 5:
                     cell = new List<int>();
                     for (int i = 3; i < 6; i++) {
@@ -148,7 +126,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 6:
                     cell = new List<int>();
                     for (int i = 3; i < 6; i++) {
@@ -158,7 +137,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 7:
                     cell = new List<int>();
                     for (int i = 6; i < 9; i++) {
@@ -168,7 +148,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 8:
                     cell = new List<int>();
                     for (int i = 6; i < 9; i++) {
@@ -178,7 +159,8 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
                 case 9:
                     cell = new List<int>();
                     for (int i = 6; i < 9; i++) {
@@ -188,8 +170,67 @@ namespace SudokuSolver {
                         }
                     }
                     listOfCells.Add(cell);
-                    break;
+                    return cell;
+                    //break;
             }
+            return null;
+        }
+
+        static void replaceVal(List<int> list,int location, int value) {
+            list.RemoveAt(location);
+            list.Insert(location, value);
+        }
+
+        static void solve() {
+            foreach(var row in listOfRows) {
+                if (row.Contains(0)) {
+                    int locOfZero = row.IndexOf(0);
+                    for (int i = 1; i < 10; i++) {
+                        if (!row.Contains(i) && !getListOfColumns()[locOfZero].Contains(i)) {
+                            replaceVal(row, locOfZero, i);
+                        }
+                    } 
+                }
+            }
+
+            //For loop to check which cell to operate on
+            for(int row = 0; row < listOfRows.Count; row++) {
+                for(int col = 0; col < listOfColumns.Count; col++) {
+                    if(row < 3) {
+                        if (col < 3) {
+
+                        }
+                        if (col < 6) {
+
+                        }
+                        if (col < 9) {
+
+                        }
+                    }
+                }
+            }
+            /*for (int i = 1; i < 10; i++) {
+                //Check the cell
+                for (int j = 1; j < 10; j++) {
+                    if (!getCell(i).Contains(j)) {
+                        if (!getListOfRows()[--i].Contains(j) || !getListOfColumns()[--i].Contains(j)) {
+                            row.Insert(row.IndexOf(0), j);
+                        }
+                    }
+                }
+            }*/
+        }
+
+        static List<List<int>> getListOfRows() {
+            return listOfRows;
+        }
+
+        static List<List<int>> getListOfColumns() {
+            return listOfColumns;
+        }
+
+        static List<List<int>> getListOfCells() {
+            return listOfCells;
         }
 
         static void printBoard(List<List<int>> board) {
