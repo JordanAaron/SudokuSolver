@@ -181,17 +181,12 @@ namespace SudokuSolver {
             list.Insert(location, value);
         }
 
+        static void swap() {
+
+        }
+
         static void solve() {
-            foreach(var row in listOfRows) {
-                if (row.Contains(0)) {
-                    int locOfZero = row.IndexOf(0);
-                    for (int i = 1; i < 10; i++) {
-                        if (!row.Contains(i) && !getListOfColumns()[locOfZero].Contains(i)) {
-                            replaceVal(row, locOfZero, i);
-                        }
-                    } 
-                }
-            }
+            
 
             //For loop to check which cell to operate on
             for(int row = 0; row < listOfRows.Count; row++) {
@@ -199,11 +194,55 @@ namespace SudokuSolver {
                     if(row < 3) {
                         if (col < 3) {
 
+                            foreach (var r in listOfRows) {
+                                //while?
+                                if (r.Contains(0)) {
+                                    int locOfZero = r.IndexOf(0);
+                                    for (int i = 1; i < 10; i++) {
+                                        if (!getCell(1).Contains(i)) {//if i doesn't occur in the cell
+                                            if (!r.Contains(i) && !getListOfColumns()[locOfZero].Contains(i)) { //if i doesn't occur in the row or column
+                                                replaceVal(r, locOfZero, i);
+                                                solve();
+                                                //int changedNum = r.IndexOf(i);
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                         if (col < 6) {
 
+                            foreach (var r in listOfRows) {
+                                if (r.Contains(0)) {
+                                    int locOfZero = r.IndexOf(0);
+                                    for (int i = 1; i < 10; i++) {
+                                        if (!getCell(2).Contains(i)) {
+                                            if (!r.Contains(i) && !getListOfColumns()[locOfZero].Contains(i)) {
+                                                replaceVal(r, locOfZero, i);
+                                                solve();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                         if (col < 9) {
+
+                            foreach (var r in listOfRows) {
+                                if (r.Contains(0)) {
+                                    int locOfZero = r.IndexOf(0);
+                                    for (int i = 1; i < 10; i++) {
+                                        if (!getCell(3).Contains(i)) {
+                                            if (!r.Contains(i) && !getListOfColumns()[locOfZero].Contains(i)) {
+                                                replaceVal(r, locOfZero, i);
+                                                solve();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                         }
                     }
